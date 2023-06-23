@@ -1,0 +1,4 @@
+.vs
+WTSoundModMaker/obj/*
+WTSoundModMaker/bin/*
+packages/*
