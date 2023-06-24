@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Ookii.Dialogs.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,7 +33,7 @@ namespace WTSoundModMaker
 
         private void buttonSelectFolder_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+            var dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog(this).GetValueOrDefault())
             {
                 // The user selected a folder.
@@ -81,15 +83,83 @@ namespace WTSoundModMaker
 
         private void buttonReplaceFiles_Click(object sender, RoutedEventArgs e)
         {
-            foreach (DataRowView row in dataGridFiles.Items)
+            try
             {
-                string originalFilePath = textBoxFolder.Text + row["Original File"];
-                string replacementFilePath = row["Replacement File"].ToString();
+                foreach (DataRowView row in dataGridFiles.Items)
+                {
+                    string originalFilePath = textBoxFolder.Text + row["Original File"];
+                    string replacementFilePath = row["Replacement File"].ToString();
 
-                // Replace the file.
-                if (!string.IsNullOrEmpty(replacementFilePath))
-                    //MessageBox.Show(replacementFilePath + " is not empty and would replace " + originalFilePath);
-                    File.Replace(replacementFilePath, originalFilePath, null);
+                    // Replace the file.
+                    if (!string.IsNullOrEmpty(replacementFilePath))
+                        //MessageBox.Show(replacementFilePath + " is not empty and would replace " + originalFilePath);
+                        File.Replace(replacementFilePath, originalFilePath, null);
+                }
+                MessageBox.Show("Replacement Complete!", "Success!");
+            }
+            catch
+            {
+                MessageBox.Show("Replacement Failed!", "Error!");
+            }
+        }
+
+        private void buttonSaveReplacements_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var dialog = new VistaSaveFileDialog();
+                dialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+                dialog.DefaultExt = "txt";
+                dialog.AddExtension = true;
+                if (dialog.ShowDialog(this).GetValueOrDefault())
+                {
+                    using (StreamWriter writer = new StreamWriter(dialog.FileName))
+                    {
+                        foreach (DataRow row in table.Rows)
+                        {
+                            writer.WriteLine(row["Replacement File"]);
+                        }
+                    }
+                }
+                MessageBox.Show("Replacements saved!", "Success!");
+            }
+            catch
+            {
+                MessageBox.Show("Couldn't save replacements!", "Error!");
+            }
+        }
+
+        private void buttonLoadReplacements_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var dialog = new VistaOpenFileDialog();
+                dialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+                dialog.DefaultExt = "txt";
+                dialog.AddExtension = true;
+                if (dialog.ShowDialog(this).GetValueOrDefault())
+                {
+                    using (StreamReader reader = new StreamReader(dialog.FileName))
+                    {
+                        foreach (DataRow row in table.Rows)
+                        {
+                            row["Replacement File"] = reader.ReadLine();
+                        }
+                    }
+                }
+                MessageBox.Show("Replacements loaded!", "Success!");
+            }
+            catch
+            {
+                MessageBox.Show("Couldn't load replacements!", "Error!");
+            }
+        }
+
+        private void buttonFindAndReplace_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (DataRow row in table.Rows)
+            {
+                row["Replacement File"] = row["Replacement File"].ToString().Replace(textBoxFind.Text, textBoxReplace.Text);
             }
         }
     }

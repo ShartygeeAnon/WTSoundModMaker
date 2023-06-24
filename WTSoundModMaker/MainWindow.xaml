@@ -10,8 +10,15 @@
         <Label Content="Folder:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="textBoxFolder" Margin="61,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="574"/>
         <Button x:Name="buttonSelectFolder" Content="Select Folder" Margin="640,13,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="72" Click="buttonSelectFolder_Click"/>
-        <DataGrid x:Name="dataGridFiles" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,41,10,10" AllowDrop="True" DragEnter="dataGridFiles_DragEnter" DragOver="dataGridFiles_DragOver" Drop="dataGridFiles_Drop" CanUserAddRows="False" ColumnWidth="*"/>
+        <DataGrid x:Name="dataGridFiles" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,63,10,10" AllowDrop="True" DragEnter="dataGridFiles_DragEnter" DragOver="dataGridFiles_DragOver" Drop="dataGridFiles_Drop" CanUserAddRows="False" ColumnWidth="*"/>
         <Button x:Name="buttonReplaceFiles" Content="Replace Files" HorizontalAlignment="Left" Margin="717,13,0,0" VerticalAlignment="Top" Click="buttonReplaceFiles_Click" Width="73"/>
+        <Button x:Name="buttonSaveReplacements" Content="Save" HorizontalAlignment="Left" Margin="640,38,0,0" VerticalAlignment="Top" Width="72" Click="buttonSaveReplacements_Click"/>
+        <Button x:Name="buttonLoadReplacements" Content="Load" HorizontalAlignment="Left" Margin="717,38,0,0" VerticalAlignment="Top" Width="73" Click="buttonLoadReplacements_Click"/>
+        <TextBox x:Name="textBoxReplace" HorizontalAlignment="Left" Margin="358,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="178"/>
+        <Button x:Name="buttonFindAndReplace" Content="Find and Replace" HorizontalAlignment="Left" Margin="541,38,0,0" VerticalAlignment="Top" Click="buttonFindAndReplace_Click"/>
+        <Label Content="Find: " HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBoxFind" HorizontalAlignment="Left" Margin="61,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233"/>
+        <Label Content="Replace:" HorizontalAlignment="Left" Margin="299,36,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
