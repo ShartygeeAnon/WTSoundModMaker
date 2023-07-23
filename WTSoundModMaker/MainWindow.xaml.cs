@@ -50,8 +50,10 @@ namespace WTSoundModMaker
                     table.Rows.Add(System.IO.Path.GetFileName(file));
                 }
                 table.Columns.Add("Replacement File");
+                table.Columns.Add("Last Replaced With");
                 dataGridFiles.ItemsSource = table.DefaultView;
                 dataGridFiles.Columns[0].IsReadOnly = true;
+                dataGridFiles.Columns[2].IsReadOnly = true;
             }
         }
 
@@ -87,13 +89,16 @@ namespace WTSoundModMaker
             {
                 foreach (DataRowView row in dataGridFiles.Items)
                 {
-                    string originalFilePath = textBoxFolder.Text + row["Original File"];
+                    string originalFilePath = textBoxFolder.Text + "\\" + row["Original File"];
                     string replacementFilePath = row["Replacement File"].ToString();
 
                     // Replace the file.
                     if (!string.IsNullOrEmpty(replacementFilePath))
                         //MessageBox.Show(replacementFilePath + " is not empty and would replace " + originalFilePath);
-                        File.Replace(replacementFilePath, originalFilePath, null);
+                        File.Copy(replacementFilePath, originalFilePath, true);
+                    if (!String.IsNullOrEmpty(row["Replacement File"].ToString()))
+                        row["Last Replaced With"] = replacementFilePath;
+                    row["Replacement File"] = String.Empty;
                 }
                 MessageBox.Show("Replacement Complete!", "Success!");
             }
